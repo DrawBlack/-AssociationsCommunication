@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f1c441c-af5a-4d75-8145-11b6ed1ad814" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/fancy/algorithm/Recommendation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AssociationCommunication.iml" afterPath="$PROJECT_DIR$/AssociationCommunication.iml" />
-    </list>
+    <list default="true" id="9f1c441c-af5a-4d75-8145-11b6ed1ad814" name="Default" comment="" />
     <ignored path="AssociationCommunication.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -682,12 +677,12 @@
       <workItem from="1484540845357" duration="1854000" />
       <workItem from="1485584984719" duration="171000" />
       <workItem from="1485702844214" duration="167000" />
-      <workItem from="1485847756899" duration="3017000" />
+      <workItem from="1485847756899" duration="3126000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5209000" />
+    <option name="totallyTimeSpent" value="5318000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
