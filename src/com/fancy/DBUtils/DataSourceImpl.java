@@ -2,6 +2,7 @@ package com.fancy.DBUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.sql.ConnectionEvent;
 import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -16,8 +17,7 @@ import java.util.logging.Logger;
 
 public class DataSourceImpl implements DataSource {
 
-    @Autowired
-    private ConnectionPool connectionPool;
+    private ConnectionPool connectionPool = new ConnectionPoolImpl();
 
     @Override
     public Connection getConnection() throws SQLException {
@@ -26,12 +26,7 @@ public class DataSourceImpl implements DataSource {
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-
-        if (null == username || null == password)
-            throw  new ProfileException();
-
-
-        return connectionPool.getConnection(username , password);
+        return connectionPool.getConnection();
     }
 
     @Override
@@ -67,5 +62,18 @@ public class DataSourceImpl implements DataSource {
     @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         return null;
+    }
+
+    public static void main(String[] args){
+        DataSourceImpl dataSource = new DataSourceImpl();
+
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        connection.hashCode();
     }
 }
