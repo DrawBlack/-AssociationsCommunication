@@ -1,60 +1,147 @@
 package com.fancy.DBUtils;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static com.fancy.DBUtils.DataBaseProfile.*;
 
 /**
  * Created by Jackie on 2017/1/31.
  *
  */
 
-@Component
-public class ConnectionImpl implements ConnectionPool , InitializingBean{
 
-    private List<ProxyConnection> busyConnections = new LinkedList<>();
+public class ConnectionPoolImpl implements ConnectionPool{
 
-    private List<ProxyConnection> freeConnections = new LinkedList<>();
+    private int freeConnCount = 20;
 
-    private static Logger logger = Logger.getLogger(ConnectionImpl.class.getName());
+    private String username = DBProfile.getUsername();
 
-    static {
+    private String password = DBProfile.getPassword();
+
+    private String url = DBProfile.getUrl();
+
+    private String driver = DBProfile.getDriver();
+
+    private int maxConnections = 20 ;
+
+    private List<ProxyConnection> busyConnections = new ArrayList<>();
+
+    private List<ProxyConnection> freeConnections = new ArrayList<>();
+
+    private static Logger logger = Logger.getLogger(ConnectionPoolImpl.class.getName());
+
+    public ConnectionPoolImpl(){
+
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            logger.warning("加载驱动时没找到驱动相关的Jar包");
-        }
-    }
-
-
-    @Override
-    public Connection getConnection() {
-        return null;
-    }
-
-    @Override
-    public Connection getConnection(String usename, String password) {
-        return null;
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        try{
-            for (int i = 0 ; i < maxConnections ; i++){
-                freeConnections.add(DriverManager.getConnection(url , usename , password));
-            }
+            initConnection();
         } catch (SQLException e) {
             e.printStackTrace();
-            logger.warning("DriverManager得到Connection时出现异常，可能是密码用户名或者数据库名不正确");
         }
+    }
+
+
+    public void initConnection() throws SQLException{
+        try{
+            //加载MySql的驱动类
+            Class.forName(driver) ;
+        }catch(ClassNotFoundException e){
+            System.out.println("找不到驱动程序类 ，加载驱动失败！");
+            e.printStackTrace() ;
+        }
+
+        for (int i = 0 ; i < maxConnections ; i ++){
+            ProxyConnection proxyConnection = new ProxyConnection( DriverManager.getConnection( url , username , password ) , this);
+            freeConnections.add(proxyConnection);
+        }
+
+    }
+
+
+
+    @Override
+    public synchronized Connection getConnection() {
+
+        Connection connection = null ;
+
+        if (freeConnCount > 0){
+            ProxyConnection proxyConnection = freeConnections.remove(--freeConnCount);
+            proxyConnection.setLastUsedTime(System.currentTimeMillis());
+            connection = proxyConnection.getProxyConnection();
+            busyConnections.add(proxyConnection);
+        }else {
+            try {
+                connection = newConnetion();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        return connection;
+    }
+
+    @Override
+    public synchronized Connection getConnection(String username, String password) {
+        return getConnection();
+    }
+
+    public void backConnection(ProxyConnection proxyConnection) throws IndexOutOfBoundsException{
+        int index = busyConnections.indexOf(proxyConnection);
+        if (index > 0){
+            busyConnections.remove(index);
+            freeConnections.add(proxyConnection);
+        }else {
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
+    private Connection newConnetion() throws SQLException {
+        return DriverManager.getConnection( "jdbc:mysql://localhost:3306/book" , "root" , "123" ) ;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getDrive() {
+        return driver;
+    }
+
+    public int getMaxConnections() {
+        return maxConnections;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setDrive(String drive) {
+        this.driver = drive;
+    }
+
+    public void setMaxConnections(int maxConnections) {
+        this.maxConnections = maxConnections;
     }
 }
