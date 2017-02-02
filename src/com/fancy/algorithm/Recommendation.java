@@ -19,9 +19,9 @@ public class Recommendation {
      * @return sorted comparables
      */
 
-    public List<Comparable> recommendation(List<Comparable> comparables , Sort sort){
+    public static List<Comparable> recommendation(List<Comparable> comparables , Sort sort){
 
-        if (null == comparables || sort == comparables)
+        if (null != comparables && null != sort)
             return sort.sort(comparables);
 
 
