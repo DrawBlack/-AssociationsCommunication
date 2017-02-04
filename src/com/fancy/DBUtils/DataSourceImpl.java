@@ -1,8 +1,5 @@
 package com.fancy.DBUtils;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.sql.ConnectionEvent;
 import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -64,7 +61,7 @@ public class DataSourceImpl implements DataSource {
         return null;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLException {
         DataSourceImpl dataSource = new DataSourceImpl();
 
         Connection connection = null;
@@ -74,6 +71,6 @@ public class DataSourceImpl implements DataSource {
             e.printStackTrace();
         }
 
-        connection.hashCode();
+        connection.close();
     }
 }

@@ -1,7 +1,5 @@
 package com.fancy.DBUtils;
 
-import org.springframework.beans.factory.InitializingBean;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,7 +16,11 @@ import java.util.logging.Logger;
 
 public class ConnectionPoolImpl implements ConnectionPool{
 
-    private int freeConnCount = 20;
+    private int maxConnections = DBProfile.getMaxConnectionCount() ;
+
+    private int freeConnCount = maxConnections;
+
+    private int defaultConnectionCount = 20 ;
 
     private String username = DBProfile.getUsername();
 
@@ -27,8 +29,6 @@ public class ConnectionPoolImpl implements ConnectionPool{
     private String url = DBProfile.getUrl();
 
     private String driver = DBProfile.getDriver();
-
-    private int maxConnections = 20 ;
 
     private List<ProxyConnection> busyConnections = new ArrayList<>();
 
@@ -55,10 +55,13 @@ public class ConnectionPoolImpl implements ConnectionPool{
             e.printStackTrace() ;
         }
 
-        for (int i = 0 ; i < maxConnections ; i ++){
-            ProxyConnection proxyConnection = new ProxyConnection( DriverManager.getConnection( url , username , password ) , this);
-            freeConnections.add(proxyConnection);
+        if (maxConnections != 0){
+            for (int i = 0 ; i < maxConnections ; i ++){
+                ProxyConnection proxyConnection = new ProxyConnection( DriverManager.getConnection( url , username , password ) , this);
+                freeConnections.add(proxyConnection);
+            }
         }
+
 
     }
 
@@ -91,9 +94,9 @@ public class ConnectionPoolImpl implements ConnectionPool{
         return getConnection();
     }
 
-    public void backConnection(ProxyConnection proxyConnection) throws IndexOutOfBoundsException{
+    public synchronized void backConnection(ProxyConnection proxyConnection) throws IndexOutOfBoundsException{
         int index = busyConnections.indexOf(proxyConnection);
-        if (index > 0){
+        if (index >= 0){
             busyConnections.remove(index);
             freeConnections.add(proxyConnection);
         }else {
@@ -101,7 +104,7 @@ public class ConnectionPoolImpl implements ConnectionPool{
         }
     }
 
-    private Connection newConnetion() throws SQLException {
+    private synchronized Connection newConnetion() throws SQLException {
         return DriverManager.getConnection( "jdbc:mysql://localhost:3306/book" , "root" , "123" ) ;
     }
 

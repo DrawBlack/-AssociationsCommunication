@@ -2,16 +2,19 @@ package com.fancy.DBUtils;
 
 /**
  * Created by Jackie on 2017/2/2.
+ *
  */
 public class DBProfile {
 
-    public static String username ;
+    private static String username ;
 
-    public static String password ;
+    private static String password ;
 
-    public static String url ;
+    private static String url ;
 
-    public static String driver ;
+    private static String driver ;
+
+    public static int maxConnectionCount ;
 
     public static String getUsername() {
         return username;
@@ -41,7 +44,15 @@ public class DBProfile {
         DBProfile.url = url;
     }
 
-    public static void setDrive(String drive) {
-        DBProfile.driver = drive;
+    public static int getMaxConnectionCount() {
+        return maxConnectionCount;
+    }
+
+    public static void setDriver(String driver) {
+        DBProfile.driver = driver;
+    }
+
+    public static void setMaxConnectionCount(int maxConnectionCount) {
+        DBProfile.maxConnectionCount = maxConnectionCount;
     }
 }

@@ -17,11 +17,21 @@ public class MyDataSourceFactory implements DataSourceFactory {
         String password = properties.getProperty("password");
         String url = properties.getProperty("url");
         String drive = properties.getProperty("driver");
+        String maxConnectionCountString = properties.getProperty("size");
+        int maxConnectionCount = 0;
+        if (maxConnectionCountString != null)
+            maxConnectionCount = Integer.parseInt(maxConnectionCountString);
+
+        if (username == null || password == null || url == null || drive == null)
+            throw new IllegalProerties("username password url driver is not allowd null");
 
         DBProfile.setUsername(username);
         DBProfile.setPassword(password);
         DBProfile.setUrl(url);
-        DBProfile.setDrive(drive);
+        DBProfile.setDriver(drive);
+
+        if (maxConnectionCount != 0)
+            DBProfile.setMaxConnectionCount(maxConnectionCount);
 
         System.out.print(drive);
     }
