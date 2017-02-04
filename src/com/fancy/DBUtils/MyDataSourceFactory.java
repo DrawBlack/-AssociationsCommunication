@@ -23,7 +23,7 @@ public class MyDataSourceFactory implements DataSourceFactory {
             maxConnectionCount = Integer.parseInt(maxConnectionCountString);
 
         if (username == null || password == null || url == null || drive == null)
-            throw new IllegalProerties("username password url driver is not allowd null");
+            throw new IllegalProerties();
 
         DBProfile.setUsername(username);
         DBProfile.setPassword(password);

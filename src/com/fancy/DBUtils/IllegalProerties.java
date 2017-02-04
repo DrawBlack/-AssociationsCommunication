@@ -5,7 +5,9 @@ package com.fancy.DBUtils;
  */
 public class IllegalProerties extends RuntimeException {
 
-    public IllegalProerties(String message){
+    private static String message = "username password url driver is not allowd null";
+
+    public IllegalProerties(){
         super(message);
     }
 
