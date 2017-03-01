@@ -11,6 +11,16 @@ import java.util.Properties;
  */
 public class MyDataSourceFactory implements DataSourceFactory {
 
+    private String username ;
+
+    private String password ;
+
+    private String url ;
+
+    private String driver ;
+
+    private int macConnectionCountSize ;
+
     @Override
     public void setProperties(Properties properties) {
         String username = properties.getProperty("username");
@@ -25,20 +35,11 @@ public class MyDataSourceFactory implements DataSourceFactory {
         if (username == null || password == null || url == null || drive == null)
             throw new IllegalProerties();
 
-        DBProfile.setUsername(username);
-        DBProfile.setPassword(password);
-        DBProfile.setUrl(url);
-        DBProfile.setDriver(drive);
-
-        if (maxConnectionCount != 0)
-            DBProfile.setMaxConnectionCount(maxConnectionCount);
-
-        System.out.print(drive);
     }
 
     @Override
     public DataSource getDataSource() {
         System.out.print("lalala");
-        return new DataSourceImpl();
+        return null;
     }
 }

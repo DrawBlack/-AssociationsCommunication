@@ -16,19 +16,19 @@ import java.util.logging.Logger;
 
 public class ConnectionPoolImpl implements ConnectionPool{
 
-    private int maxConnections = DBProfile.getMaxConnectionCount() ;
+    private int maxConnections  ;
 
     private int freeConnCount = maxConnections;
 
     private int defaultConnectionCount = 20 ;
 
-    private String username = DBProfile.getUsername();
+    private String username ;
 
-    private String password = DBProfile.getPassword();
+    private String password ;
 
-    private String url = DBProfile.getUrl();
+    private String url;
 
-    private String driver = DBProfile.getDriver();
+    private String driver ;
 
     private List<ProxyConnection> busyConnections = new ArrayList<>();
 
@@ -36,7 +36,13 @@ public class ConnectionPoolImpl implements ConnectionPool{
 
     private static Logger logger = Logger.getLogger(ConnectionPoolImpl.class.getName());
 
-    public ConnectionPoolImpl(){
+    public ConnectionPoolImpl(DBProfile dbProfile){
+
+        this.maxConnections = dbProfile.getMaxConnectionCount();
+        this.username = dbProfile.getUsername();
+        this.password = dbProfile.getPassword();
+        this.url = dbProfile.getUrl();
+        this.driver = dbProfile.getDriver();
 
         try {
             initConnection();
@@ -99,6 +105,7 @@ public class ConnectionPoolImpl implements ConnectionPool{
         if (index >= 0){
             busyConnections.remove(index);
             freeConnections.add(proxyConnection);
+            freeConnCount++;
         }else {
             throw new IndexOutOfBoundsException();
         }

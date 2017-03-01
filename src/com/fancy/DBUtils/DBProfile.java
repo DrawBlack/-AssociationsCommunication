@@ -6,53 +6,53 @@ package com.fancy.DBUtils;
  */
 public class DBProfile {
 
-    private static String username ;
+    private  String username ;
 
-    private static String password ;
+    private  String password ;
 
-    private static String url ;
+    private String url ;
 
-    private static String driver ;
+    private  String driver ;
 
-    public static int maxConnectionCount ;
+    private int maxConnectionCount ;
 
-    public static String getUsername() {
-        return username;
-    }
-
-    public static String getPassword() {
-        return password;
-    }
-
-    public static String getUrl() {
-        return url;
-    }
-
-    public static String getDriver() {
-        return driver;
-    }
-
-    public static void setUsername(String username) {
-        DBProfile.username = username;
-    }
-
-    public static void setPassword(String password) {
-        DBProfile.password = password;
-    }
-
-    public static void setUrl(String url) {
-        DBProfile.url = url;
-    }
-
-    public static int getMaxConnectionCount() {
+    public int getMaxConnectionCount() {
         return maxConnectionCount;
     }
 
-    public static void setDriver(String driver) {
-        DBProfile.driver = driver;
+    public  String getUsername() {
+        return username;
     }
 
-    public static void setMaxConnectionCount(int maxConnectionCount) {
-        DBProfile.maxConnectionCount = maxConnectionCount;
+    public  String getPassword() {
+        return password;
+    }
+
+    public  String getUrl() {
+        return url;
+    }
+
+    public  String getDriver() {
+        return driver;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setDriver(String driver) {
+        this.driver = driver;
+    }
+
+    public void setMaxConnectionCount(int maxConnectionCount) {
+        this.maxConnectionCount = maxConnectionCount;
     }
 }

@@ -14,8 +14,12 @@ import java.util.logging.Logger;
 
 public class DataSourceImpl implements DataSource {
 
-    private ConnectionPool connectionPool = new ConnectionPoolImpl();
 
+    private ConnectionPool connectionPool;
+
+    public DataSourceImpl(DBProfile dbProfile){
+        connectionPool = new ConnectionPoolImpl(dbProfile);
+    }
     @Override
     public Connection getConnection() throws SQLException {
         return connectionPool.getConnection();
@@ -61,16 +65,4 @@ public class DataSourceImpl implements DataSource {
         return null;
     }
 
-    public static void main(String[] args) throws SQLException {
-        DataSourceImpl dataSource = new DataSourceImpl();
-
-        Connection connection = null;
-        try {
-            connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        connection.close();
-    }
 }
