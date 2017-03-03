@@ -10,7 +10,11 @@
     </bean>
 
     <bean id="dbProfile" class="com.fancy.DBUtils.DBProfile">
-
+        <property name="username" value=""/>
+        <property name="password" value=""/>
+        <property name="driver" value=""/>
+        <property name="url" value=""/>
+        <property name="maxConnectionCount" value="20"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -18,6 +22,5 @@
 
         </property>
     </bean>
-
 
 </beans>
